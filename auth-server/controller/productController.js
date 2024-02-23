@@ -26,19 +26,20 @@ const getAllProduct = async(req, res) => {
 
 const getOneProduct = async (req,res) => {
   let id = req.params.id
-  const product = await Product.findOne({where:{id:id}});
+  const product = await Product.findOne({where:{title:req.query.title}});
   res.status(200).send(product);
 }
 
 const updateProduct = async(req,res) => {
-  let id = req.params.id
-  const product = await Product.update(req.body, {where:{id:id}})
+ // let id = req.params.id
+  const product = await Product.update(req.body, {where:{title:req.body.title}})
   res.status(200).send(product);
+
 }
 
 const deleteProduct = async(req,res) => {
   let id = req.params.id
-  await Product.destroy({where :{id:id}})
+  await Product.destroy({where :{title:req.body.title}})
   res.status(200).send('Product is deleted')
 }
 
