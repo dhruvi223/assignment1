@@ -1,8 +1,10 @@
+const multer = require('multer');
+const path = require('path');
 const db = require('./models/model.js');
 //const db = require('../models/model')
 
 const Product = db.users;
-
+const user = db.products;
 
 const express = require('express')
 // import low from 'lowdb';
@@ -19,7 +21,8 @@ const app = express();
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
-
+app.use(express.static('public'));
+//app.use(express.static('public/images'));
 //routers
 const routerp = require('./routes/prodectRouter.js')
 app.use('/api/products', routerp)
@@ -38,13 +41,57 @@ app.listen(PORT, () => console.log(`Server started at port:${PORT}`))
 const secretKey = crypto.randomBytes(32).toString('hex');
 
 
+//upload images
+
+const storage = multer.diskStorage(
+    {
+        destination: (req, res, cb) => {
+            cb(null,'public/images' )
+        },
+        filename: (req, file, cb) => {
+            cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+        }
+    }
+)
+
+
+const upload = multer(
+    { storage: storage}
+)
+
+
+
+app.post('/upload', upload.single('image'),async (req,res) => {
+   const image = req.file.filename;
+   console.log(image)
+   console.log(req.body.id)
+  const product = await user.update({imageUrl: image}, {where:{id:req.body.id}})
+})
+
+app.post('/upupload', upload.single('image'),async (req,res) => {
+    const image = req.file.filename;
+    console.log(image)
+    console.log(req.body.title)
+   const product = await user.update({imageUrl: image}, {where:{title:req.body.title}})
+ })
+
+
+
+
+
+
+
+
+
+
 
 //rest apis for login and registration
 
 
 
-app.get('/', (req,res) => {
-    res.send("hello")
+app.get('/', async (req,res) => {
+    const product = await user.findAll();
+    return res.json(product)
 })
 
 // for login
@@ -210,6 +257,6 @@ app.post('/verify', (req,res) => {
 })
 
 
-module.exports = db;
+//module.exports = db;
 
-
+module.exports = { db, upload };

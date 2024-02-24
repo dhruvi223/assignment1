@@ -13,10 +13,11 @@ const addProduct = async (req,res) => {
         description: req.body.description,
         category: req.body.category
       }
-      console.log(info)
+      console.log(info.imageUrl)
 
       const product = await Product.create(info);
-      res.status(200).json({message: 'success'})
+      console.log(product.id)
+      res.status(200).json({ id: product.id });
 }
 
 const getAllProduct = async(req, res) => {
@@ -33,8 +34,12 @@ const getOneProduct = async (req,res) => {
 
 const updateProduct = async(req,res) => {
  // let id = req.params.id
+
   const product = await Product.update(req.body, {where:{title:req.body.title}})
-  res.status(200).send(product);
+  //res.status(200).send(product);
+  const p = await Product.findOne({where:{title:req.body.title}});
+  console.log(p)
+  res.status(200).json({id: p.id});
 
 }
 
