@@ -25,7 +25,8 @@ const getAllProduct = async(req, res) => {
 }
 
 const getOneProduct = async (req,res) => {
-  let id = req.params.id
+  console.log(req.body.title)
+  //let id = req.params.id
   const product = await Product.findOne({where:{title:req.query.title}});
   res.status(200).send(product);
 }
