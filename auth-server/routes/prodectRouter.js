@@ -11,5 +11,6 @@ routerp.get('/allProducts',productController.getAllProduct)
 routerp.get('/getOne',productController.getOneProduct)
 routerp.put('/update/:title',productController.updateProduct)
 routerp.delete('/delete',productController.deleteProduct)
+routerp.get('/getProductsbyPids', productController.getProductsByPids)
 
 module.exports = routerp;

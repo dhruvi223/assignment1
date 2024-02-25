@@ -5,6 +5,7 @@ const db = require('./models/model.js');
 
 const Product = db.users;
 const user = db.products;
+const LikedProducts = db.likedProducts;
 
 const express = require('express')
 // import low from 'lowdb';
@@ -29,6 +30,9 @@ app.use('/api/products', routerp)
 
 const routeru = require('./routes/userRouter.js')
 app.use('/api/users', routeru)
+
+const routerl = require('./routes/LikedRouter.js')
+app.use('/api/lproducts', routerl)
 
 
 //var adapter = new FileSync('./database.json')
