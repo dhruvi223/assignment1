@@ -6,7 +6,8 @@ const db = require('./models/model.js');
 const Product = db.users;
 const user = db.products;
 const LikedProducts = db.likedProducts;
-
+const chat = db.chat;
+console.log(chat)
 const express = require('express')
 // import low from 'lowdb';
 // import FileSync from 'lowdb/adapters/FileSync';

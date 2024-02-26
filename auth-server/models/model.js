@@ -35,6 +35,7 @@ db.Sequelize = Sequelize;
 db.products = require('./productModel.js')(sequelize, DataTypes)
 db.users = require('./userModel.js')(sequelize, DataTypes)
 db.likedProducts = require('./likeModel.js')(sequelize, DataTypes)
+db.chats = require('./chatModel.js')(sequelize, DataTypes)
 
 db.sequelize.sync({ force: false})
 .then(() => {console.log('re-sync done')})
