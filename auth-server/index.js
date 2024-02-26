@@ -163,8 +163,8 @@ app.post('/authreg', async (req,res) => {
                 role: req.body.role})
                let LoginData = {
                 email, signInTime : Date.now()
-                //exp: Math.floor(Date.now() / 1000) + (3 * 24 * 60 * 60) 
             }
+            
                const token = jwt.sign(LoginData, secretKey);
                res.status(200).json({message: "success", token})}
                catch (error){
@@ -184,11 +184,6 @@ app.post('/authreg', async (req,res) => {
 
 app.post('/check-account', (req,res) => {
     const {email} = req.body;
-    // const uemail1 = [(db.get('users').value())];
-    // const uemail = uemail1.filter((uemail) => uemail.email === email)
-    // //console.log(uemail1)
-    // console.log(uemail);
-    // console.log(uemail.length)
 
     const user1 = [(db.get('users').value())];
     const user = user1.filter((user) => email === user.email)
@@ -208,21 +203,17 @@ app.post('/check-account', (req,res) => {
 app.post('/verify', (req,res) => {
     const tokenHeaderKey = 'jwt-token';
     const authToken = req.headers[tokenHeaderKey];
-    //console.log(authToken)
     const verify = jwt.verify(authToken, secretKey);
     console.log(verify)
-    //try{
+
     if(verify){
         res.status(200).json({status: 'Logged in', message: 'success'})
     }else{
         res.status(401).json({status: 'Invalid auth',message: 'error'})
     }
-    //}catch(error){
-    //    res.status(401).json({status: 'Invalid auth', message: 'error'})
-    //}
 })
 
 
-//module.exports = db;
+
 
 module.exports = { db, upload };
