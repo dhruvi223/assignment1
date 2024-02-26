@@ -1,0 +1,16 @@
+Postman collection: 
+1. http://localhost:8000/auth(post) - for login
+2. http://localhost:8000/authreg(post) - for registration
+3. http://localhost:8000/check-account - for checking if account exist
+4. http://localhost:8000//verify - verify account using jwt token
+5. http://localhost:8000//upload - for uploading image in create list
+6. http://localhost:8000/upupload - for uploading image in update list
+7. http://localhost:8000/api/products/addProduct - adding product in create list
+8. http://localhost:8000/api/products/allProducts - retriving all products 
+9. http://localhost:8000/api/products/getOne - get one product in search
+10. http://localhost:8000/api/products/update/:title - update product
+11. http://localhost:8000/api/products/delete - delete product
+12. http://localhost:8000/api/products/getProductsbyPids - get product by product id in liked product list.
+13. http://localhost:8000/api/users/get - get user by email id in profile 
+14. http://localhost:8000/api/lproducts/addlProduct - add product in liked products
+15. http://localhost:8000//api/lproducts//allLProducts - get all liked products by user.
