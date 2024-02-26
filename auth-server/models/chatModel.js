@@ -1,34 +1,22 @@
+// chat table for saving chats
 const { DataTypes } = require("sequelize");
-
-//title, description,image, category
+// defined a model for chats table
 module.exports = (sequelize, DataTypes) => {
-   const Chat = sequelize.define('chats', {
-    //  username: {
-    //    type: DataTypes.STRING,
-    //    allownull: false
-    //  },
+  const Chat = sequelize.define("chats", {
+
     MessageID: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        //autoIncrement: true
-      },
-      SenderID:{ type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
-    //   references: {
-    //     model: 'users',
-    //     key: 'id'
-    //   }
     },
-    message:{ type: DataTypes.STRING,
-        
-      },
-    ReceiverID: {type: DataTypes.INTEGER,
-    allowNull: false,
-    // references: {
-    //     model: 'users',
-    //     key: 'id'
-    //   }
-}
-    });
-    return Chat;
-}
+    SenderID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    message: { type: DataTypes.STRING },
+    ReceiverID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  });
+  return Chat;
+};

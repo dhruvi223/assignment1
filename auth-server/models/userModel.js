@@ -1,20 +1,15 @@
 const { DataTypes } = require("sequelize");
 
-//title, description,image, category
+// defined a model for users table
 module.exports = (sequelize, DataTypes) => {
-   const User = sequelize.define('user', {
-    //  username: {
-    //    type: DataTypes.STRING,
-    //    allownull: false
-    //  },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      password:{ type: DataTypes.STRING,
-      allowNull: false
+  const User = sequelize.define("user", {
+    
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-      role: {type: DataTypes.STRING}
-    });
-    return User;
-}
+    password: { type: DataTypes.STRING, allowNull: false },
+    role: { type: DataTypes.STRING },
+  });
+  return User;
+};

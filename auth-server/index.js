@@ -1,22 +1,20 @@
 const multer = require('multer');
 const path = require('path');
 const db = require('./models/model.js');
-//const db = require('../models/model')
 
-const Product = db.users;
-const user = db.products;
-const LikedProducts = db.likedProducts;
-const chat = db.chat;
-console.log(chat)
+
 const express = require('express')
-// import low from 'lowdb';
-// import FileSync from 'lowdb/adapters/FileSync';
 const bcrypt= require('bcrypt')
 var cors = require('cors')
 const jwt = require('jsonwebtoken')
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync');
 const app = express();
+
+
+const User = db.users;
+const Product = db.products;
+const LikedProducts = db.likedProducts;
+const chat = db.chat;
+
 
 //middelware
 
@@ -24,7 +22,8 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
 app.use(express.static('public'));
-//app.use(express.static('public/images'));
+
+
 //routers
 const routerp = require('./routes/prodectRouter.js')
 app.use('/api/products', routerp)
@@ -36,9 +35,6 @@ const routerl = require('./routes/LikedRouter.js')
 app.use('/api/lproducts', routerl)
 
 
-//var adapter = new FileSync('./database.json')
-var adapter = new FileSync('./database.json')
-//var db = low(adapter)
 const crypto = require('crypto');
 const PORT = 8000;
 app.listen(PORT, () => console.log(`Server started at port:${PORT}`))
@@ -46,7 +42,7 @@ app.listen(PORT, () => console.log(`Server started at port:${PORT}`))
 const secretKey = crypto.randomBytes(32).toString('hex');
 
 
-//upload images
+//upload images using multer
 
 const storage = multer.diskStorage(
     {
@@ -65,19 +61,20 @@ const upload = multer(
 )
 
 
-
+// for uploading images while creating list by product id
 app.post('/upload', upload.single('image'),async (req,res) => {
    const image = req.file.filename;
    console.log(image)
    console.log(req.body.id)
-  const product = await user.update({imageUrl: image}, {where:{id:req.body.id}})
+  const product = await Product.update({imageUrl: image}, {where:{id:req.body.id}})
 })
 
+// for uploding images while updating list
 app.post('/upupload', upload.single('image'),async (req,res) => {
     const image = req.file.filename;
     console.log(image)
     console.log(req.body.title)
-   const product = await user.update({imageUrl: image}, {where:{title:req.body.title}})
+   const product = await Product.update({imageUrl: image}, {where:{title:req.body.title}})
  })
 
 
@@ -88,31 +85,19 @@ app.post('/upupload', upload.single('image'),async (req,res) => {
 
 
 
+ app.get('/', async (req,res) => {
+     const product = await Product.findAll();
+     return res.json(product)
+ })
 
 
 //rest apis for login and registration
 
 
 
-app.get('/', async (req,res) => {
-    const product = await user.findAll();
-    return res.json(product)
-})
 
 // for login
 app.post('/auth', async (req,res) => {
-    // const {email, password} = req.body;
-    // //console.log(email);
-    // //const user1 = [(db.get('users').value())];
-    // //console.log(user1)
-    // //const user = user1.filter((user) => email === user.email)
-    // const user = db
-    // .get('users')
-    // .value()s
-    // .filter((user) => email === user.email)
-    
-    //console.log(user[0].password)
-    //console.log(hashedPassword)
 
     let info = {
         email: req.body.email,
@@ -120,33 +105,21 @@ app.post('/auth', async (req,res) => {
       }
       email = info.email
   
-    const user = [await Product.findOne({where:{email:info.email}})];
-    //const user1 = user.filter((user) => info.email === user.email)
-    //console.log(user)
-    //console.log(user1.length)
-    //console.log(user.length)
-    // console.log(email);
-    // console.log(password);
-    // console.log(user[0].password)
-  
+    const user = [await User.findOne({where:{email:info.email}})];
 
     if(user[0] === null){
         return res.status(401).json({ message: 'Email is not registered' })
 
     }
     else{ 
-       const hashedPassword = bcrypt.hashSync(info.password, 10);
-       //console.log(info.password)
-       //console.log(user.password)
+       // bcrypt.compare for comparing entered passwored and saved hash password
        bcrypt.compare(info.password, user[0].password, function(err, result){
-          //console.log(result)
         if(err){console.log('Error', err);
         return;}
         
           if(result){
             let LoginData = {
                 email, signInTime: Date.now()
-               // exp: Math.floor(Date.now() / 1000) + (3 * 24 * 60 * 60) 
             }
             const token = jwt.sign(LoginData, secretKey);
             res.status(200).json({message:'success',token})
@@ -165,10 +138,6 @@ app.post('/auth', async (req,res) => {
 
 // for registration
 app.post('/authreg', async (req,res) => {
-    //const {email, password} = req.body;
-    //const user1 = [(db.get('users').value())];
-    //console.log(user1)
-    //const user = user1.filter((user) => email === user.email)
 
     let info = {
         email: req.body.email,
@@ -176,23 +145,18 @@ app.post('/authreg', async (req,res) => {
         role: req.body.role
       }
   
-    const user = [await Product.findOne({where:{email:info.email}})];
+    const user = [await User.findOne({where:{email:info.email}})];
 
-    // const user = db
-    // .get('users')
-    // .value()
-    // .filter((user) => email === user.email)
     email = info.email;
     console.log(user[0])
     if(user[0] === null){
+        // used bcrypt for creating hash of password
         bcrypt.hash(info.password, 10, function(err, hash){
             if (err){
                 console.log('error')
             }else{
-               //console.log({email,password : hash});
                const saveUser = async () => {
                console.log(hash);
-               //db.get('users').push({email, password : hash}).write();
                try{
                const user = await Product.create({email: req.body.email,
                 password: hash,
@@ -211,9 +175,6 @@ app.post('/authreg', async (req,res) => {
             }
             
         });
-        //console.log(password)
-        //const hashedPassword = bcrypt.hashSync(password, 10);
-        //console.log(hashedPassword);
 
     }
     else{

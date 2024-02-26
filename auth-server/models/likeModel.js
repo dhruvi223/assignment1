@@ -1,19 +1,13 @@
 const { DataTypes } = require("sequelize");
 
-//title, description,image, category
+// defined a model for likedProduct table
 module.exports = (sequelize, DataTypes) => {
-   const LikedProduct = sequelize.define('likedProduct', {
-    //  username: {
-    //    type: DataTypes.STRING,
-    //    allownull: false
-    //  },
-      userEmail: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      pid:{ type: DataTypes.INTEGER,
-      allowNull: false
-    }
-    });
-    return LikedProduct;
-}
+  const LikedProduct = sequelize.define("likedProduct", {
+    userEmail: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    pid: { type: DataTypes.INTEGER, allowNull: false },
+  });
+  return LikedProduct;
+};
