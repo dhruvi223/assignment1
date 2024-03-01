@@ -77,15 +77,8 @@ app.post('/upupload', upload.single('image'),async (req,res) => {
    const product = await Product.update({imageUrl: image}, {where:{title:req.body.title}})
  })
 
-
-
-
-
-
-
-
-
- app.get('/', async (req,res) => {
+// get all products list
+app.get('/', async (req,res) => {
      const product = await Product.findAll();
      return res.json(product)
  })
@@ -144,7 +137,7 @@ app.post('/authreg', async (req,res) => {
         password: req.body.password,
         role: req.body.role
       }
-  
+    console.log(info)
     const user = [await User.findOne({where:{email:info.email}})];
 
     email = info.email;
@@ -158,7 +151,7 @@ app.post('/authreg', async (req,res) => {
                const saveUser = async () => {
                console.log(hash);
                try{
-               const user = await Product.create({email: req.body.email,
+               const user = await User.create({email: req.body.email,
                 password: hash,
                 role: req.body.role})
                let LoginData = {
