@@ -2,13 +2,11 @@ const db = require("../models/model.js");
 const { Op } = require("sequelize");
 const Product = db.products;
 
-
 // get all liked products by product id
 const getProductsByPids = async (req, res) => {
-  console.log(req.query);
-  
+
+
   const pidsArray = req.query.pidsArray; // Assuming pidsArray is sent in the request body
-  
 
   try {
     // Fetch products with matching pids
@@ -20,8 +18,6 @@ const getProductsByPids = async (req, res) => {
 
     res.status(200).json(products);
   } catch (error) {
-    console.error("Error fetching products:", error);
-    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -34,10 +30,8 @@ const addProduct = async (req, res) => {
     description: req.body.description,
     category: req.body.category,
   };
-  console.log(info.imageUrl);
 
   const product = await Product.create(info);
-  console.log(product.id);
   res.status(200).json({ id: product.id });
 };
 
@@ -53,14 +47,12 @@ const getOneProduct = async (req, res) => {
   res.status(200).send(product);
 };
 
-// update product 
+// update product
 const updateProduct = async (req, res) => {
-   const product = await Product.update(req.body, {
+  const product = await Product.update(req.body, {
     where: { title: req.body.title },
   });
-  //res.status(200).send(product);
   const p = await Product.findOne({ where: { title: req.body.title } });
-  console.log(p);
   res.status(200).json({ id: p.id });
 };
 

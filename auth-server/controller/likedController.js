@@ -13,18 +13,19 @@ const addlProduct = async (req, res) => {
 };
 
 const deletelProduct = async (req, res) => {
-  await LikedProduct.destroy({ where: { pid: req.body.pid, userEmail: req.body.email } });
+  await LikedProduct.destroy({
+    where: { pid: req.body.pid, userEmail: req.body.email },
+  });
   res.status(200).send("Product is removed from liked");
 };
 
 // get product ids of all liked product for any user
 const getAllLProduct = async (req, res) => {
-  console.log(req.query.email)
-  //let info = { userEmail: req.body.email };
   const product = await LikedProduct.findAll({
     where: { userEmail: req.query.email },
   });
   res.status(200).send(product);
 };
+
 
 module.exports = { addlProduct, getAllLProduct, deletelProduct };

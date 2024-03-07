@@ -16,7 +16,6 @@ const addUser = async (req, res) => {
 // get one user from users
 const getOneUser = async (req, res) => {
   let id = req.params.id;
-  console.log(req.query.email);
   const user = await User.findOne({ where: { email: req.query.email } });
   res.status(200).send(user);
 };

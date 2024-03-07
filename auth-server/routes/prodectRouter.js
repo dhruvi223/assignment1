@@ -1,5 +1,3 @@
-const multer = require("multer");
-const path = require("path");
 const productController = require("../controller/productController.js");
 const express = require("express");
 const routerp = require("express").Router();
